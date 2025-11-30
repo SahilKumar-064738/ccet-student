@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Materials - CCET Student Vault</title>
+    <link rel="stylesheet" href="css/public.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="brand">í³š CCET Student Vault</div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="../admin/login.html">Admin Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container main-content">
+        <div class="breadcrumb">
+            <a href="index.html">Home</a> / 
+            <a href="#" id="breadcrumbBranch">Branch</a> / 
+            <span id="subjectName">Subject</span>
+        </div>
+
+        <div class="page-header">
+            <div>
+                <h1 id="pageTitle">Study Materials</h1>
+                <p id="subjectDetails" class="subtitle"></p>
+            </div>
+        </div>
+
+        <div class="filters-bar">
+            <div class="filter-group">
+                <label>File Type:</label>
+                <select id="fileTypeFilter" class="filter-select">
+                    <option value="">All Types</option>
+                    <option value="exam">Exams</option>
+                    <option value="solution">Solutions</option>
+                    <option value="notes">Notes</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Exam Type:</label>
+                <select id="examTypeFilter" class="filter-select">
+                    <option value="">All</option>
+                    <option value="MST1">MST1</option>
+                    <option value="MST2">MST2</option>
+                    <option value="QUIZ">Quiz</option>
+                    <option value="ASSIGNMENT">Assignment</option>
+                    <option value="ENDSEM">End Sem</option>
+                    <option value="REAPPEAR">Reappear</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Teacher:</label>
+                <select id="teacherFilter" class="filter-select">
+                    <option value="">All Teachers</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <input type="text" id="searchInput" placeholder="Search materials..." class="search-input">
+            </div>
+        </div>
+
+        <div id="materialsContainer">
+            <div class="loading">Loading materials...</div>
+        </div>
+    </main>
+
+    <div id="pdfModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2 id="modalTitle">PDF Preview</h2>
+                <button class="close-btn" onclick="closePdfModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <iframe id="pdfViewer" style="width: 100%; height: 70vh; border: none;"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 CCET Student Vault. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/public-common.js"></script>
+    <script src="js/materials.js"></script>
+</body>
+</html>

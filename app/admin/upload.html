@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload File - CCET Student Vault</title>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">í³š CCET Vault</div>
+                <div class="sidebar-user">
+                    <div id="userName">Loading...</div>
+                    <div id="userRole"></div>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">í³Š Dashboard</a>
+                <a href="upload.html" class="nav-item active">í³¤ Upload File</a>
+                <a href="files.html" class="nav-item">í³„ Manage Files</a>
+                <a href="subjects.html" class="nav-item">í³š Manage Subjects</a>
+                <a href="users.html" class="nav-item" id="usersLink" style="display: none;">í±¥ Manage Users</a>
+                <a href="../public/index.html" class="nav-item">í¿  Public Site</a>
+                <a href="#" class="nav-item" onclick="logout()">íºª Logout</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="page-header">
+                <h1 class="page-title">Upload File</h1>
+            </div>
+
+            <div id="alertBox" class="alert" style="display: none;"></div>
+
+            <div class="card">
+                <div class="card-header">Upload PDF File</div>
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="title">Title *</label>
+                        <input type="text" id="title" name="title" class="form-input" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="subjectId">Subject *</label>
+                            <select id="subjectId" name="subject_id" class="form-input" required>
+                                <option value="">Select Subject</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fileType">File Type *</label>
+                            <select id="fileType" name="file_type" class="form-input" required>
+                                <option value="">Select Type</option>
+                                <option value="exam">Exam</option>
+                                <option value="solution">Solution</option>
+                                <option value="notes">Notes</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group" id="examTypeGroup" style="display: none;">
+                            <label for="examType">Exam Type</label>
+                            <select id="examType" name="exam_type" class="form-input">
+                                <option value="">Select Exam Type</option>
+                                <option value="MST1">MST1</option>
+                                <option value="MST2">MST2</option>
+                                <option value="QUIZ">Quiz</option>
+                                <option value="ASSIGNMENT">Assignment</option>
+                                <option value="ENDSEM">End Sem</option>
+                                <option value="REAPPEAR">Reappear</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="linkedExamGroup" style="display: none;">
+                            <label for="linkedExamId">Linked Exam</label>
+                            <select id="linkedExamId" name="linked_exam_id" class="form-input">
+                                <option value="">Select Exam</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="teacherName">Teacher Name *</label>
+                        <input type="text" id="teacherName" name="teacher_name" class="form-input" required placeholder="e.g., Dr. John Doe">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea id="description" name="description" class="form-input" rows="3"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Upload PDF File *</label>
+                        <div class="file-input-wrapper">
+                            <input type="file" id="file" name="file" accept=".pdf" required>
+                            <label for="file" class="file-input-label">
+                                <span id="fileName">Choose PDF file...</span>
+                            </label>
+                        </div>
+                        <small style="color: var(--text-light);">Maximum file size: 50MB. PDF only.</small>
+                    </div>
+
+                    <button type="submit" id="submitBtn" class="btn btn-primary">í³¤ Upload File</button>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/admin-common.js"></script>
+    <script src="js/upload.js"></script>
+</body>
+</html>

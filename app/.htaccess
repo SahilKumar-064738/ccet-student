@@ -1,0 +1,54 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    
+    # Prevent access to uploads directory directly
+    RewriteRule ^uploads/ - [F,L]
+    
+    # API Routes - allow direct access
+    RewriteCond %{REQUEST_URI} ^/api/
+    RewriteRule ^ - [L]
+    
+    # Admin Routes - allow direct access to files
+    RewriteCond %{REQUEST_URI} ^/admin/
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^ - [L]
+    
+    # Public Routes - allow direct access to files
+    RewriteCond %{REQUEST_URI} ^/public/
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^ - [L]
+    
+    # Redirect root to public
+    RewriteRule ^$ /public/index.html [L]
+    
+    # Redirect /admin to admin/login.html
+    RewriteRule ^admin/?$ /admin/login.html [L]
+</IfModule>
+
+# Security Headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Disable directory browsing
+Options -Indexes
+
+# Set default charset
+AddDefaultCharset UTF-8
+
+# Protect sensitive files
+<FilesMatch "^(\.htaccess|\.env|composer\.json|composer\.lock|.*\.sh)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Allow access to static assets
+<FilesMatch "\.(css|js|png|jpg|jpeg|gif|svg|ico|pdf|woff|woff2|ttf|eot)$">
+    <IfModule mod_headers.c>
+        Header set Cache-Control "public, max-age=604800"
+    </IfModule>
+</FilesMatch>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users - CCET Student Vault</title>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">í³š CCET Vault</div>
+                <div class="sidebar-user">
+                    <div id="userName">Loading...</div>
+                    <div id="userRole"></div>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">í³Š Dashboard</a>
+                <a href="upload.html" class="nav-item">í³¤ Upload File</a>
+                <a href="files.html" class="nav-item">í³„ Manage Files</a>
+                <a href="subjects.html" class="nav-item">í³š Manage Subjects</a>
+                <a href="users.html" class="nav-item active">í±¥ Manage Users</a>
+                <a href="../public/index.html" class="nav-item">í¿  Public Site</a>
+                <a href="#" class="nav-item" onclick="logout()">íºª Logout</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="page-header">
+                <h1 class="page-title">Manage Users</h1>
+                <button class="btn btn-primary" onclick="showAddUserModal()">âž• Add Admin</button>
+            </div>
+
+            <div id="alertBox" class="alert" style="display: none;"></div>
+
+            <div class="card">
+                <div id="usersContainer">
+                    <div class="loading">Loading users...</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Admin</h2>
+                <button class="close-btn" onclick="closeAddModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="addName">Name *</label>
+                    <input type="text" id="addName" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="addEmail">Email *</label>
+                    <input type="email" id="addEmail" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="addRole">Role *</label>
+                    <select id="addRole" class="form-input" required>
+                        <option value="admin">Branch-Year Admin</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="addBranch">Branch *</label>
+                    <select id="addBranch" class="form-input" required></select>
+                </div>
+                <div class="form-group">
+                    <label for="addYear">Year *</label>
+                    <select id="addYear" class="form-input" required></select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeAddModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveNewUser()">Add Admin</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/admin-common.js"></script>
+    <script src="js/users.js"></script>
+</body>
+</html>

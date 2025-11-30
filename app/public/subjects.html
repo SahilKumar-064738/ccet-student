@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subjects - CCET Student Vault</title>
+    <link rel="stylesheet" href="css/public.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="brand">í³š CCET Student Vault</div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="subjects.html" class="active">Subjects</a>
+                <a href="../admin/login.html">Admin Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container main-content">
+        <div class="breadcrumb">
+            <a href="index.html">Home</a> / <span id="branchName">...</span>
+        </div>
+
+        <div class="page-header">
+            <h1 id="pageTitle">Subjects</h1>
+            <div class="filters">
+                <select id="yearFilter" class="filter-select">
+                    <option value="">All Years</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="subjectsContainer">
+            <div class="loading">Loading subjects...</div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 CCET Student Vault. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/public-common.js"></script>
+    <script src="js/subjects.js"></script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Files - CCET Student Vault</title>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">í³š CCET Vault</div>
+                <div class="sidebar-user">
+                    <div id="userName">Loading...</div>
+                    <div id="userRole"></div>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">í³Š Dashboard</a>
+                <a href="upload.html" class="nav-item">í³¤ Upload File</a>
+                <a href="files.html" class="nav-item active">í³„ Manage Files</a>
+                <a href="subjects.html" class="nav-item">í³š Manage Subjects</a>
+                <a href="users.html" class="nav-item" id="usersLink" style="display: none;">í±¥ Manage Users</a>
+                <a href="../public/index.html" class="nav-item">í¿  Public Site</a>
+                <a href="#" class="nav-item" onclick="logout()">íºª Logout</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="page-header">
+                <h1 class="page-title">Manage Files</h1>
+            </div>
+
+            <div id="alertBox" class="alert" style="display: none;"></div>
+
+            <div class="card">
+                <div id="filesContainer">
+                    <div class="loading">Loading files...</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit File</h2>
+                <button class="close-btn" onclick="closeEditModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="editFileId">
+                <div class="form-group">
+                    <label for="editTitle">Title</label>
+                    <input type="text" id="editTitle" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label for="editTeacher">Teacher Name</label>
+                    <input type="text" id="editTeacher" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label for="editDescription">Description</label>
+                    <textarea id="editDescription" class="form-input" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveFileEdit()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/admin-common.js"></script>
+    <script src="js/files.js"></script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: ccet_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass123
+      MYSQL_DATABASE: ccet_vault
+      MYSQL_USER: ccet_user
+      MYSQL_PASSWORD: ccet_pass123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - ccet_network
+
+  php:
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    container_name: ccet_php
+    restart: always
+    ports:
+      - "8080:80"
+    volumes:
+      - ./app:/var/www/html
+    depends_on:
+      - mysql
+    networks:
+      - ccet_network
+    environment:
+      DB_HOST: mysql
+      DB_NAME: ccet_vault
+      DB_USER: ccet_user
+      DB_PASS: ccet_pass123
+
+volumes:
+  mysql_data:
+
+networks:
+  ccet_network:
+    driver: bridge

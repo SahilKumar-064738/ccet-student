@@ -1,0 +1,190 @@
+#!/bin/bash
+
+echo "Generating complete frontend..."
+
+# [Previous public pages code...]
+
+# ==========================================
+# ADMIN: dashboard.html
+# ==========================================
+cat > app/admin/dashboard.html << 'EOF'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - CCET Student Vault</title>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">Ì≥ö CCET Vault</div>
+                <div class="sidebar-user">
+                    <div id="userName">Loading...</div>
+                    <div id="userRole" style="font-size: 0.8rem; opacity: 0.7;"></div>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item active">Ì≥ä Dashboard</a>
+                <a href="upload.html" class="nav-item">ÔøΩÔøΩ Upload File</a>
+                <a href="files.html" class="nav-item">Ì≥Ñ Manage Files</a>
+                <a href="subjects.html" class="nav-item">ÔøΩÔøΩ Manage Subjects</a>
+                <a href="users.html" class="nav-item" id="usersLink" style="display: none;">Ì±• Manage Users</a>
+                <a href="audit-logs.html" class="nav-item" id="auditLink" style="display: none;">Ì≥ã Audit Logs</a>
+                <a href="../public/index.html" class="nav-item">Ìø† Public Site</a>
+                <a href="#" class="nav-item" onclick="logout()">Ì∫™ Logout</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="page-header">
+                <h1 class="page-title">Dashboard</h1>
+            </div>
+
+            <div id="alertBox" class="alert" style="display: none;"></div>
+
+            <div class="stats-grid" id="statsContainer">
+                <div class="loading">Loading statistics...</div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Recent Uploads</div>
+                <div id="recentUploads">
+                    <div class="loading">Loading...</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/admin-common.js"></script>
+    <script>
+        let dashboardStats = null;
+
+        async function initDashboard() {
+            await checkSession();
+            updateSidebar();
+            await loadDashboardStats();
+        }
+
+        function updateSidebar() {
+            document.getElementById('userName').textContent = currentUser.name;
+            document.getElementById('userRole').textContent = 
+                currentUser.role === 'super_admin' ? 'Super Administrator' : 
+                currentUser.branch_name + ' - Year ' + currentUser.year_number;
+            
+            if (currentUser.role === 'super_admin') {
+                document.getElementById('usersLink').style.display = 'block';
+                document.getElementById('auditLink').style.display = 'block';
+            }
+        }
+
+        async function loadDashboardStats() {
+            try {
+                const data = await apiRequest('/admin/dashboard.php');
+                dashboardStats = data.data;
+                displayStats();
+                displayRecentUploads();
+            } catch (error) {
+                showAlert('Failed to load dashboard data', 'error');
+            }
+        }
+
+        function displayStats() {
+            const statsContainer = document.getElementById('statsContainer');
+            
+            if (currentUser.role === 'super_admin') {
+                statsContainer.innerHTML = `
+                    <div class="stat-card">
+                        <div class="stat-label">Total Subjects</div>
+                        <div class="stat-value">${dashboardStats.total_subjects || 0}</div>
+                        <div class="stat-icon">Ì≥ö</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Total Files</div>
+                        <div class="stat-value">${dashboardStats.total_files || 0}</div>
+                        <div class="stat-icon">Ì≥Ñ</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Total Admins</div>
+                        <div class="stat-value">${dashboardStats.total_admins || 0}</div>
+                        <div class="stat-icon">Ì±•</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Total Downloads</div>
+                        <div class="stat-value">${dashboardStats.total_downloads || 0}</div>
+                        <div class="stat-icon">‚¨áÔ∏è</div>
+                    </div>
+                `;
+            } else {
+                statsContainer.innerHTML = `
+                    <div class="stat-card">
+                        <div class="stat-label">My Subjects</div>
+                        <div class="stat-value">${dashboardStats.my_subjects || 0}</div>
+                        <div class="stat-icon">Ì≥ö</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Total Files</div>
+                        <div class="stat-value">${dashboardStats.my_files || 0}</div>
+                        <div class="stat-icon">Ì≥Ñ</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Uploaded by Me</div>
+                        <div class="stat-value">${dashboardStats.uploaded_by_me || 0}</div>
+                        <div class="stat-icon">Ì≥§</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">My Downloads</div>
+                        <div class="stat-value">${dashboardStats.my_downloads || 0}</div>
+                        <div class="stat-icon">‚¨áÔ∏è</div>
+                    </div>
+                `;
+            }
+        }
+
+        function displayRecentUploads() {
+            const container = document.getElementById('recentUploads');
+            const uploads = currentUser.role === 'super_admin' ? 
+                dashboardStats.recent_uploads : dashboardStats.my_recent_uploads;
+            
+            if (!uploads || uploads.length === 0) {
+                container.innerHTML = '<div class="empty-state">No recent uploads</div>';
+                return;
+            }
+            
+            container.innerHTML = `
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Subject</th>
+                                <th>Type</th>
+                                ${currentUser.role === 'super_admin' ? '<th>Uploaded By</th>' : ''}
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${uploads.map(file => `
+                                <tr>
+                                    <td>${file.title}</td>
+                                    <td>${file.subject_name}</td>
+                                    <td><span class="badge badge-primary">${file.file_type}</span></td>
+                                    ${currentUser.role === 'super_admin' ? '<td>' + (file.uploader_name || 'N/A') + '</td>' : ''}
+                                    <td>${formatDate(file.created_at)}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        document.addEventListener('DOMContentLoaded', initDashboard);
+    </script>
+</body>
+</html>
+EOF
+
+echo "‚úÖ All admin pages created"
